@@ -1,28 +1,23 @@
-
-import './App.css';
 import React, { useEffect, useState } from 'react';
 
 const App: React.FC = () => {
-  const [person, setPerson] = useState<string | null>(null);
+  const [personName, setPersonName] = useState<string | null>(null);
 
   useEffect(() => {
-    fetch('https://swapi.dev/api/people').then((response) => {
-      
-        return response.json();
-      })
+    fetch('https://swapi.dev/api/people/')
+      .then((response) => response.json())
       .then((data) => {
-        setPerson(data.results[0].name);
-      })
-     
-  });
+        if (data.results && data.results.length > 0) {
+          setPersonName(data.results[0].name);
+        }
+      });
+  }, []);
 
   return (
     <div>
-        <h1>{person}</h1>
+      <h1>{personName ? personName : 'Loading...'}</h1>
     </div>
   );
 };
 
 export default App;
-
-
