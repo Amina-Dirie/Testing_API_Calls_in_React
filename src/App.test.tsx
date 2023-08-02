@@ -1,9 +1,13 @@
-import React from 'react';
 import { render, screen } from '@testing-library/react';
 import App from './App';
+import { server } from './mock/browser';
 
-test('renders learn react link', () => {
+beforeAll(() => server.listen());
+afterEach(() => server.resetHandlers());
+afterAll(() => server.close());
+
+test('renders the first person fetched from the API', async () => {
   render(<App />);
-  const linkElement = screen.getByText(/learn react/i);
-  expect(linkElement).toBeInTheDocument();
+  const firstPerson = await screen.findByText('Luke Skywalker');
+  expect(firstPerson).toBeInTheDocument();
 });
